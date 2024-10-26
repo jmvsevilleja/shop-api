@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose'; // Import MongooseModule
 import { UsersService } from './users.service';
 import {
   AdminController,
@@ -9,8 +10,12 @@ import {
   UsersController,
   VendorController,
 } from './users.controller';
+import { User, UserSchema } from './models/user.schema';
 
 @Module({
+  imports: [
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]), // Register User schema
+  ],
   controllers: [
     UsersController,
     ProfilesController,
