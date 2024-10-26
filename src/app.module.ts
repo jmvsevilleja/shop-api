@@ -43,8 +43,11 @@ import { FlashSaleModule } from './flash-sale/flash-sale.module';
 import { RefundPoliciesModule } from './refund-policies/refund-policies.module';
 import { RefundReasonModule } from './refund-reasons/refund-reasons.module';
 import { NotifyLogsModule } from './notify-logs/notify-logs.module';
+import { MongooseModule } from '@nestjs/mongoose'; // Import MongooseModule
+
 @Module({
   imports: [
+    MongooseModule.forRoot('mongodb://localhost:27017/pickbazar'),
     ConfigModule.forRoot(),
     StripeModule.forRoot({
       apiKey: process.env.STRIPE_API_KEY,
