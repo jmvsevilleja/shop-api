@@ -4,9 +4,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { GetUsersDto, UserPaginator } from './dto/get-users.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import Fuse from 'fuse.js';
-import { User } from './entities/user.entity';
 import usersJson from '@db/users.json';
 import { paginate } from 'src/common/pagination/paginate';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { User } from './entities/user.schema';
 
 const users = plainToClass(User, usersJson);
 
@@ -18,10 +20,13 @@ const fuse = new Fuse(users, options);
 
 @Injectable()
 export class UsersService {
+  constructor(@InjectModel(User.name) private userModel: Model<User>) {} // Injecting the userModel
+
   private users: User[] = users;
 
   create(createUserDto: CreateUserDto) {
-    return this.users[0];
+    const newUser = new this.userModel(createUserDto); // Create a new user instance
+    return newUser.save(); // Save the user to the database
   }
 
   async getUsers({

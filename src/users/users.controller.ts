@@ -14,12 +14,32 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { GetUsersDto } from './dto/get-users.dto';
+import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { User } from './entities/user.schema';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create a new user' }) // Summary of the operation
+  @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: User }) // Successful response
+  @ApiResponse({ status: 400, description: 'Bad Request' }) // Error response
+  @ApiBody({
+    description: 'User data to create a new user',
+    type: CreateUserDto,
+    examples: {
+      example1: {
+        summary: 'Sample User',
+        value: {
+          name: 'John Doe',
+          email: 'john.doe@example.com',
+          age: 30,
+          password: 'securePassword123',
+        },
+      },
+    },
+  }) // Sample request body
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }

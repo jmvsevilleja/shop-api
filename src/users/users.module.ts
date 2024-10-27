@@ -10,7 +10,7 @@ import {
   UsersController,
   VendorController,
 } from './users.controller';
-import { User, UserSchema } from './models/user.schema';
+import { User, UserSchema } from './entities/user.schema';
 
 @Module({
   imports: [

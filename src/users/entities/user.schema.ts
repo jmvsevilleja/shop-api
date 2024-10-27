@@ -1,14 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Pivot } from './pivot.interface';
-import { Profile } from '../entities/profile.entity';
+import { Profile } from './profile.entity';
 import { Shop } from 'src/shops/entities/shop.entity';
-import { Wallet } from './wallet.interface';
-import { Address } from './address.interface';
 
 export type UserDocument = User & Document;
 
-@Schema()
+
+// src/users/models/pivot.interface.ts
+export interface Pivot {
+  model_id: number;        // The ID of the model (e.g., User ID)
+  permission_id: number;   // The ID of the permission
+  model_type: string;      // The type of the model (e.g., "Marvel\\Database\\Models\\User")
+}
+
 export class Permission {
   @Prop({ required: false })
   name?: string;
@@ -21,6 +25,25 @@ export class Permission {
 }
 
 export const PermissionSchema = SchemaFactory.createForClass(Permission);
+
+
+export interface Address {
+  zip: string;          // The ZIP code
+  city: string;         // The city name
+  state: string;        // The state name
+  country: string;      // The country name
+  street_address: string; // The street address
+}
+
+export interface Wallet {
+  id: number;                // The ID of the wallet
+  total_points: number;      // Total points in the wallet
+  points_used: number;       // Points that have been used
+  available_points: number;  // Points available for use
+  customer_id: number;       // ID of the associated customer
+  created_at: Date;          // Timestamp of wallet creation
+  updated_at: Date;          // Timestamp of last update
+}
 
 @Schema()
 export class User {
